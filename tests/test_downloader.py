@@ -22,7 +22,7 @@ def test_downloader():
                   max_lon=-117.40,                      
                   start_time="2019-09-01 00:00:00.00", 
                   end_time="2019-09-03 00:00:00.00",
-                  channel_list=["HH[ZNE]", "HH[Z21]", "BH[ZNE]", "EH[ZNE]", "SH[ZNE]", "HN[ZNE]", "HN[Z21]", "DP[ZNE]"],
+                  channel_list=["HH[ZNE]", "HH[Z21]", "BH[ZNE]", "EH[ZNE]", "SH[ZNE]", "HN[ZNE]", "HN[Z21]", "DP[ZNE]"],  ### utils/dowlander
                   filter_network=["SY"],
                   filter_station=[])
     
