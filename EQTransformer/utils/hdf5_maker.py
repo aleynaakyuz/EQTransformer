@@ -182,7 +182,7 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
                 fl_counts += 1 
                 
                 chanL = [st1[0].stats.channel[-1], st1[1].stats.channel[-1], st1[2].stats.channel[-1]]
-                next_slice = start_time+60               
+                next_slice = start_time+60                                                              ### 60 saniyelik windowlara ayırıyor.
                 while next_slice <= end_time:
                     w = st1.slice(start_time, next_slice) 
                     npz_data = np.zeros([6000,3])
