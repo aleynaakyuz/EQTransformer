@@ -76,8 +76,8 @@ def makeStationList(json_path,client_list, min_lat, max_lat, min_lon, max_lon, s
          inventory = Client(cl).get_stations(minlatitude=min_lat,
                                      maxlatitude=max_lat, 
                                      minlongitude=min_lon, 
-                                     maxlongitude=max_lon, 
-                                     starttime=UTCDateTime(start_time), 
+                                     maxlongitude=max_lon,                       ### Her client için belirli aralıklardaki lattitude and magnitude değerlerindeki istasyonları
+                                     starttime=UTCDateTime(start_time),          ### seçiyor.
                                      endtime=UTCDateTime(end_time), 
                                      level='channel',**kwargs)    
 
