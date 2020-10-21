@@ -76,7 +76,7 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
     save_dir = os.path.join(os.getcwd(), str(mseed_dir)+'_processed_hdfs')
     if os.path.isdir(save_dir):
         print(f' *** " {mseed_dir} " directory already exists!')
-        inp = input(" * --> Do you want to creat a new empty folder? Type (Yes or y) ")
+        inp = input(" * --> Do you want to creat a new empty folder? Type (Yes or y) ")             ### dosyayı açmaya çalışıyor.
         if inp.lower() == "yes" or inp.lower() == "y":        
             shutil.rmtree(save_dir)  
     os.makedirs(save_dir)
@@ -89,7 +89,7 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
     data_track = dict()
     
     def process(station):
-    # for station in station_list:
+                                                                                                                    # for station in station_list:
         output_name = station.split('/')[-1]
         try:
             os.remove(output_name+'.hdf5')
@@ -121,7 +121,7 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
             
             if len(matching) == 3:  
                 
-                st1 = read(matching[0], debug_headers=True)
+                st1 = read(matching[0], debug_headers=True)      ### datayı okuyor
                 org_samplingRate = st1[0].stats.sampling_rate
                 
                 for tr in st1:                   
@@ -130,10 +130,10 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
 
                 try:
                     st1.merge(fill_value=0) 
-                except Exception:
+                except Exception:               ### merge ediyor
                     st1=_resampling(st1)
                     st1.merge(fill_value=0)                     
-                st1.detrend('demean') 
+                st1.detrend('demean')           ### mean remove
                 count_chuncks += 1; c3 += 1
                 print('  * '+station.split('/')[1]+' ('+str(count_chuncks)+') .. '+month.split('T')[0]+' --> '+month.split('__')[1].split('T')[0]+' .. 3 components .. sampling rate: '+str(org_samplingRate))  
                  
@@ -153,14 +153,14 @@ def preprocessor(preproc_dir, mseed_dir, stations_json, overlap=0.3, n_processor
                     st3.merge(fill_value=0) 
                 st3.detrend('demean')
                 
-                st1.append(st2[0])
+                st1.append(st2[0])          ### traceleri append ediyor(?)
                 st1.append(st3[0])
                 st1.filter('bandpass',freqmin = 1.0, freqmax = 45, corners=2, zerophase=True)
                 st1.taper(max_percentage=0.001, type='cosine', max_length=2)
                 if len([tr for tr in st1 if tr.stats.sampling_rate != 100.0]) != 0:
                     try:
                         st1.interpolate(100, method="linear")
-                    except Exception:
+                    except Exception:                               ### sampling ratei ayarlıyor
                         st1=_resampling(st1)
                         
                                      
