@@ -15,7 +15,7 @@ import os
 def test_hdf5maker():
     
     preprocessor(mseed_dir='downloads_mseeds', 
-             stations_json='station_list.json', 
+             stations_json='station_list.json',         ### utils/hdf5_maker
              overlap=0.3,
              n_processor=2)
 
