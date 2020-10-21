@@ -83,7 +83,7 @@ def makeStationList(json_path,client_list, min_lat, max_lat, min_lon, max_lon, s
 
          for ev in inventory:
              net = ev.code
-             if net not in filter_network:
+             if net not in filter_network:                                     ### istemediği istasyonları ve networkleri filtreliyor.
                  for st in ev:
                      station = st.code
                      print(str(net)+"--"+str(station))
@@ -126,7 +126,7 @@ def makeStationList(json_path,client_list, min_lat, max_lat, min_lon, max_lon, s
      json_dir = os.path.dirname(json_path)
      if not os.path.exists(json_dir):
          os.makedirs(json_dir)
-     with open(json_path, 'w') as fp:
+     with open(json_path, 'w') as fp:        ### station listi oluşturuyor.
          json.dump(station_list, fp)
          
          
