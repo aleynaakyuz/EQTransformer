@@ -133,8 +133,8 @@ class DataGenerator(keras.utils.Sequence):
     def __len__(self):
         'Denotes the number of batches per epoch'
         if self.augmentation:
-            return 2*int(np.floor(len(self.list_IDs) / self.batch_size))
-        else:
+            return 2*int(np.floor(len(self.list_IDs) / self.batch_size))  
+        else:                                                             ###
             return int(np.floor(len(self.list_IDs) / self.batch_size))
 
     def __getitem__(self, index):
@@ -146,7 +146,19 @@ class DataGenerator(keras.utils.Sequence):
             indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]           
         list_IDs_temp = [self.list_IDs[k] for k in indexes]
 
-        X, y1, y2, y3 = self.__data_generation(list_IDs_temp)
+        X, y1, y2, y3 = self.__data_generation(list_IDs_temp)      
+        
+                                                                                              #   def __data_generation(self, list_IDs_temp):
+                                                                                               # 'readint the waveforms' 
+             #mseed predictor                                                                  #X = np.zeros((self.batch_size, 6000, 3))           
+                                                                                                # Generate data
+                                                                                               # for i, ID in enumerate(list_IDs_temp):            
+                                                                                                #    data = self.inp_data[ID]
+                                                                                                 #   data = self._normalize(data, self.norm_mode)                            
+                                                                                                  #  X[i, :, :] = data                                                           
+
+                                                                                               #     return X   
+    
         return ({'input': X}, {'detector': y1, 'picker_P': y2, 'picker_S': y3})
 
     def on_epoch_end(self):
@@ -158,15 +170,15 @@ class DataGenerator(keras.utils.Sequence):
     def _normalize(self, data, mode = 'max'):  
         'Normalize waveforms in each batch'
         
-        data -= np.mean(data, axis=0, keepdims=True)
+        data -= np.mean(data, axis=0, keepdims=True)    #mean remove
         if mode == 'max':
-            max_data = np.max(data, axis=0, keepdims=True)
+            max_data = np.max(data, axis=0, keepdims=True)   #max a bölüyor
             assert(max_data.shape[-1] == data.shape[-1])
             max_data[max_data == 0] = 1
             data /= max_data              
 
         elif mode == 'std':               
-            std_data = np.std(data, axis=0, keepdims=True)
+            std_data = np.std(data, axis=0, keepdims=True)   #std te bölüyor
             assert(std_data.shape[-1] == data.shape[-1])
             std_data[std_data == 0] = 1
             data /= std_data
@@ -334,7 +346,7 @@ class DataGenerator(keras.utils.Sequence):
                 spt = int(dataset.attrs['p_arrival_sample']);
                 sst = int(dataset.attrs['s_arrival_sample']);
                 coda_end = int(dataset.attrs['coda_end_sample']);
-                snr = dataset.attrs['snr_db'];
+                snr = dataset.attrs['snr_db'];  ## signal to noise ratio.
                     
             elif ID.split('_')[-1] == 'NO':
                 data = np.array(dataset)
@@ -343,7 +355,7 @@ class DataGenerator(keras.utils.Sequence):
             if self.augmentation == True:                 
                 if i <= self.batch_size//2:   
                     if self.shift_event_r and dataset.attrs['trace_category'] == 'earthquake_local':
-                        data, spt, sst, coda_end = self._shift_event(data, spt, sst, coda_end, snr, self.shift_event_r/2);                                       
+                        data, spt, sst, coda_end = self._shift_event(data, spt, sst, coda_end, snr, self.shift_event_r/2);                                     
                     if self.norm_mode:                    
                         data = self._normalize(data, self.norm_mode)  
                 else:                  
